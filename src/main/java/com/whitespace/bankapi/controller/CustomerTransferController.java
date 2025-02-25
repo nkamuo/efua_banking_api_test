@@ -1,8 +1,9 @@
 package com.whitespace.bankapi.controller;
 
 import com.whitespace.bankapi.model.Account;
+import com.whitespace.bankapi.model.Transfer;
 import com.whitespace.bankapi.model.Customer;
-import com.whitespace.bankapi.repository.AccountRepository;
+import com.whitespace.bankapi.repository.TransferRepository;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
@@ -16,18 +17,18 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/customers/{customer}")
-public class CustomerAccountController {
+public class CustomerTransferController {
 
-    private final AccountRepository accountRepository;
+    private final TransferRepository transferRepository;
 
-    public CustomerAccountController(AccountRepository accountRepository) {
-        this.accountRepository = accountRepository;
+    public CustomerTransferController(TransferRepository transferRepository) {
+        this.transferRepository = transferRepository;
     }
 
-    // Show all Accounts
-    @GetMapping("/accounts")
-    public ResponseEntity<Page<Account>> getAllCustomerAccounts(
-            @PathVariable Customer customer,
+    // Show all Transfers
+    @GetMapping("/transfers")
+    public ResponseEntity<Page<Transfer>> getAllCustomerTransfers(
+            @PathVariable Account account,
             @RequestParam(required = false, defaultValue = "1") Integer page,
             @RequestParam(required = false, defaultValue = "10") Integer perPage
     ) {
@@ -37,17 +38,21 @@ public class CustomerAccountController {
         if(page > 0){
             page--;
         }
-        var accounts = accountRepository.findAll(new Specification<Account>() {
+        var transfers = transferRepository.findAll(new Specification<Transfer>() {
             @Override
-            public Predicate toPredicate(Root<Account> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-                return criteriaBuilder.and(
+            public Predicate toPredicate(Root<Transfer> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+                return criteriaBuilder.or(
                         criteriaBuilder.equal(
-                                root.<Customer>get("customer"),
-                                customer
+                                root.get("sourceAccountId"),
+                                account.getId()
+                        ),
+                        criteriaBuilder.equal(
+                                root.get("targetAccountId"),
+                                account.getId()
                         )
                 );
             }
         }, Pageable.ofSize(perPage).withPage(page));
-        return new ResponseEntity<>(accounts, HttpStatus.OK);
+        return new ResponseEntity<>(transfers, HttpStatus.OK);
     }
 }

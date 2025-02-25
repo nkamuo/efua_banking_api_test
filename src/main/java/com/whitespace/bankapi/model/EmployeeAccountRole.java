@@ -1,4 +1,7 @@
 package com.whitespace.bankapi.model;
 
-public class EmployeeAccountRole {
+public enum EmployeeAccountRole {
+    VIEW,
+    MANAGE,
+    ADMIN
 }

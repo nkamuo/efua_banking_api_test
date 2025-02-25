@@ -2,10 +2,10 @@ package com.whitespace.bankapi.exception;
 
 import com.whitespace.bankapi.model.Account;
 
-public class InsuficientFundException extends RuntimeException{
+public class InsufficientFundException extends RuntimeException{
 
-    public InsuficientFundException(Long amount, Account account){
-        var message = "Cannot transfer "+  amount+" Insufficient funds in source account.";
-        super(message);
+    public InsufficientFundException(Long amount, Account account){
+//        var message = "Cannot transfer "+  amount+" Insufficient funds in source account.";
+        super("Cannot transfer "+  amount+" Insufficient funds in source account.");
     }
 }
