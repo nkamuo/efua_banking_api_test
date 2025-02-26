@@ -17,7 +17,6 @@ public class Customer {
         this.name = name;
     }
 
-    // Getters & setters
 
     public Long getId() {
         return id;

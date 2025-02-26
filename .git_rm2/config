@@ -1,0 +1,10 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+	ignorecase = true
+	precomposeunicode = true
+[remote "whitespace"]
+	url = http://whitespace-qehouz@git.codesubmit.io/whitespace/banking-api-yzcjbx
+	fetch = +refs/heads/*:refs/remotes/whitespace/*

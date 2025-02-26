@@ -28,7 +28,7 @@ public class Employee {
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> roles = new HashSet<>();
 
-    // Constructors, getters and setters
+
 
     public Employee() { }
 

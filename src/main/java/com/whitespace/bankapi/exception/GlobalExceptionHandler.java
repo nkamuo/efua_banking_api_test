@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
 
     // Catch any AccountNotFound and transform it into a friendly error message
     @ExceptionHandler(AccountNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleRuntimeException(AccountNotFoundException ex) {
+    public ResponseEntity<ErrorResponse> handleAccountNotFoundException(AccountNotFoundException ex) {
 
         ErrorResponse errorResponse = new ErrorResponse(
                 ex.getClass().getSimpleName(),
@@ -54,7 +54,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleRuntimeException(BankingException ex) {
 
         ErrorResponse errorResponse = new ErrorResponse(
-//                "BANKING_ERROR",
                 ex.getClass().getSimpleName(),
                 "An unexpected error occurred. Please try again later.",
                 LocalDateTime.now()
@@ -64,8 +63,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    // You can add more specific exception handlers if needed.
-    // For example, handling IllegalArgumentException differently:
+    // handling IllegalArgumentException differently:
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
         ErrorResponse errorResponse = new ErrorResponse(

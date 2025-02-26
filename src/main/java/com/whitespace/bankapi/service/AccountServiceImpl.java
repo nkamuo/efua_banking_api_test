@@ -1,5 +1,6 @@
 package com.whitespace.bankapi.service;
 
+import com.whitespace.bankapi.exception.AccountNotFoundException;
 import com.whitespace.bankapi.model.Account;
 import com.whitespace.bankapi.model.Customer;
 import com.whitespace.bankapi.model.Transfer;
@@ -37,7 +38,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Long getBalance(Long accountId) {
         Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+                .orElseThrow(() -> new AccountNotFoundException("Account not found"));
         return account.getBalance();
     }
 

@@ -2,6 +2,9 @@ package com.whitespace.bankapi.exception;
 
 import com.whitespace.bankapi.model.Account;
 
+/**
+ * Thrown when source and destination accounts of a transfer operation are the same
+ */
 public class SelfTransferException extends BankingException{
 
     public SelfTransferException(Account account){
