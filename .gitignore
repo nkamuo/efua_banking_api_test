@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Custom
+.git_rm
+.git_rm2
