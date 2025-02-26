@@ -4,6 +4,11 @@ import com.whitespace.bankapi.model.Account;
 import com.whitespace.bankapi.model.Transfer;
 import com.whitespace.bankapi.model.Customer;
 import com.whitespace.bankapi.repository.TransferRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
@@ -26,6 +31,19 @@ public class CustomerTransferController {
     }
 
     // Show all Transfers
+
+    @Operation(summary = "Show all Transfers by or to this Customer",
+            parameters = {
+            @Parameter(
+                    name = "customer"
+            )
+            },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Request Successful",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = Transfer.class))),
+                    @ApiResponse(responseCode = "404", description = "Customer not found")
+            })
     @GetMapping("/transfers")
     public ResponseEntity<Page<Transfer>> getAllCustomerTransfers(
             @PathVariable Account account,
@@ -47,7 +65,7 @@ public class CustomerTransferController {
                                 account.getId()
                         ),
                         criteriaBuilder.equal(
-                                root.get("targetAccountId"),
+                                root.get("destinationAccountId"),
                                 account.getId()
                         )
                 );
