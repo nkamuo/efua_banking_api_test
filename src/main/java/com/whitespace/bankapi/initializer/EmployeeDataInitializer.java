@@ -19,6 +19,8 @@ public class EmployeeDataInitializer {
                 admin.setPassword(passwordEncoder.encode("adminpassword")); // Change default password as needed
                 admin.setSuperUser(true);
                 // Assign a global role for superuser; Spring Security expects roles to be prefixed with "ROLE_"
+                admin.getRoles().add("ROLE_USER");
+                        admin.getRoles().add("ROLE_ADMIN");
                 admin.getRoles().add("ROLE_SUPERUSER");
                 employeeRepository.save(admin);
                 System.out.println("Super user created: admin/adminpassword\n\n");
@@ -36,6 +38,7 @@ public class EmployeeDataInitializer {
                 admin.setSuperUser(false);
                 // Assign a global role for superuser; Spring Security expects roles to be prefixed with "ROLE_"
                 admin.getRoles().add("ROLE_USER");
+                admin.getRoles().add("ROLE_ADMIN");
                 employeeRepository.save(admin);
                 System.out.println("Regular user created: user/password\n\n");
             }

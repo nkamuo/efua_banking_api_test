@@ -1,25 +1,19 @@
 package com.whitespace.bankapi.dto;
 
-public class CreateAccountRequest {
-    private Long customerId;
-    private Long initialDeposit;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
-    public CreateAccountRequest() { }
-
-    // Getters & setters
-    public Long getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
-    }
-
-    public Long getInitialDeposit() {
-        return initialDeposit;
-    }
-
-    public void setInitialDeposit(Long initialDeposit) {
-        this.initialDeposit = initialDeposit;
-    }
+/**
+ *
+ * @param customerId the ID of the customer this new account should belong to
+ * @param initialDeposit the initial account balance to be associated with this account
+ */
+public record CreateAccountRequest(
+        @NotNull
+        @Positive
+         Long customerId,
+        @NotNull
+        @Positive
+         Long initialDeposit
+        ) {
 }

@@ -1,7 +1,6 @@
 package com.whitespace.bankapi.dto;
 
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import org.hibernate.validator.constraints.Length;
 
 /**
@@ -9,7 +8,7 @@ import org.hibernate.validator.constraints.Length;
  * @param username Employees Username
  * @param password Employees password
  */
-public record CreateEmployeeRequest(
+public record UpdateEmployeeRequest(
         @NotNull
                 @Length(min = 3, max = 64)
          String username,

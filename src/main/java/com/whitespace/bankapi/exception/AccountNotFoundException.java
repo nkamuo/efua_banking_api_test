@@ -1,10 +1,8 @@
 package com.whitespace.bankapi.exception;
 
-import com.whitespace.bankapi.model.Account;
+public class AccountNotFoundException extends IllegalArgumentException{
 
-public class AccountNotFound extends IllegalArgumentException{
-
-    public AccountNotFound(String message){
+    public AccountNotFoundException(String message){
         super(message);
     }
 }

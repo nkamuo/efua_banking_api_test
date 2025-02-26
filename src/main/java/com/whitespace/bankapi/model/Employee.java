@@ -1,5 +1,6 @@
 package com.whitespace.bankapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -16,6 +17,7 @@ public class Employee {
     private String username;
 
     // Encoded password
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
 

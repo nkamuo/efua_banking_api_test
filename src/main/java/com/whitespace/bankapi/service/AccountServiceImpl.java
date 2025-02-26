@@ -12,19 +12,20 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class AccountService {
+public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
     private final CustomerRepository customerRepository;
     private final TransferRepository transferRepository;
 
-    public AccountService(AccountRepository accountRepository, CustomerRepository customerRepository, TransferRepository transferRepository) {
+    public AccountServiceImpl(AccountRepository accountRepository, CustomerRepository customerRepository, TransferRepository transferRepository) {
         this.accountRepository = accountRepository;
         this.customerRepository = customerRepository;
         this.transferRepository = transferRepository;
     }
 
     @Transactional
+    @Override
     public Account createAccount(Long customerId, Long initialDeposit) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
@@ -33,12 +34,14 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
+    @Override
     public Long getBalance(Long accountId) {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new IllegalArgumentException("Account not found"));
         return account.getBalance();
     }
 
+    @Override
     public List<Transfer> getTransferHistory(Long accountId) {
         return transferRepository.findBySourceAccountIdOrDestinationAccountId(accountId, accountId);
     }

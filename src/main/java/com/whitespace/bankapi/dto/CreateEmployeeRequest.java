@@ -2,18 +2,17 @@ package com.whitespace.bankapi.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import org.hibernate.validator.constraints.Length;
 
 /**
- * Transfer fund by withdrawing from one account and depositing into another
- * @param sourceAccountId The id of the account to withdraw the fund from
- * @param destinationAccountId The id of the account to deposit the fund to
- * @param amount
+ * Creates a new Employee account
+ * @param username Employees Username
+ * @param password Employees password
  */
-public record TransferRequest (
+public record CreateEmployeeRequest(
         @NotNull
-         Long sourceAccountId,
+                @Length(min = 3, max = 64)
+         String username,
                 @NotNull
-                 Long destinationAccountId,
-                @NotNull
-                @Positive()
- Long amount){}
+                @Length(min = 6, max = 128)
+                String password){}

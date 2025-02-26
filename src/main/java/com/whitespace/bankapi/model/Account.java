@@ -15,6 +15,9 @@ public class Account {
     private Customer customer;
 
     public Account() { }
+    public Account(Long id) {
+        this.id = id;
+    }
 
     public Account(Customer customer, Long initialDeposit) {
         this.customer = customer;

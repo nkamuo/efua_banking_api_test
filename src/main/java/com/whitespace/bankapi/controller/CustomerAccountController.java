@@ -2,7 +2,13 @@ package com.whitespace.bankapi.controller;
 
 import com.whitespace.bankapi.model.Account;
 import com.whitespace.bankapi.model.Customer;
+import com.whitespace.bankapi.model.Transfer;
 import com.whitespace.bankapi.repository.AccountRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
@@ -25,6 +31,20 @@ public class CustomerAccountController {
     }
 
     // Show all Accounts
+    @Operation(summary = "Show all Accounts owned by this Customer",
+            parameters = {
+                    @Parameter(
+                            name = "customer",
+                            schema = @Schema(implementation = Long.class )
+
+                    )
+            },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Request Successful",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = Account.class))),
+                    @ApiResponse(responseCode = "404", description = "Customer not found")
+            })
     @GetMapping("/accounts")
     public ResponseEntity<Page<Account>> getAllCustomerAccounts(
             @PathVariable Customer customer,

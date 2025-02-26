@@ -1,10 +1,16 @@
 package com.whitespace.bankapi.controller;
 
 import com.whitespace.bankapi.dto.TransferRequest;
-import com.whitespace.bankapi.model.Account;
+import com.whitespace.bankapi.exception.BankingException;
+import com.whitespace.bankapi.model.Employee;
 import com.whitespace.bankapi.model.Transfer;
 import com.whitespace.bankapi.repository.TransferRepository;
 import com.whitespace.bankapi.service.TransferService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -16,16 +22,20 @@ import org.springframework.web.bind.annotation.*;
 public class TransferController {
 
     private final TransferService transferService;
-    private final TransferRepository accountRepository;
+    private final TransferRepository transferRepository;
 
-    public TransferController(TransferService transferService, TransferRepository accountRepository) {
+    public TransferController(TransferService transferService, TransferRepository transferRepository) {
         this.transferService = transferService;
-        this.accountRepository = accountRepository;
+        this.transferRepository = transferRepository;
     }
 
 
 
-    // Show all Accounts
+    // Show all Transfers
+    @Operation(summary = "Retrieve all Transfers", responses = {
+            @ApiResponse(responseCode = "200", description = "List paginated list of transfers",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Employee.class))))
+    })
     @GetMapping
     public ResponseEntity<Page<Transfer>> getAllTransfers(
             @RequestParam(required = false, defaultValue = "1") Integer page,
@@ -37,12 +47,17 @@ public class TransferController {
         if(page > 0){
             page--;
         }
-        var accounts = accountRepository.findAll(Pageable.ofSize(perPage).withPage(page));
-        return new ResponseEntity<>(accounts, HttpStatus.OK);
+        var transfers = transferRepository.findAll(Pageable.ofSize(perPage).withPage(page));
+        return new ResponseEntity<>(transfers, HttpStatus.OK);
     }
 
 
     // Endpoint to transfer money between accounts
+    @Operation(summary = "Transfer money between accounts", responses = {
+            @ApiResponse(responseCode = "200", description = "Transfer successful",
+                    content = @Content(mediaType = "text/plain")),
+            @ApiResponse(responseCode = "400", description = "Invalid transfer request")
+    })
     @PostMapping
     public ResponseEntity<String> transferMoney(@RequestBody TransferRequest request) {
         try {
